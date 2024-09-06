@@ -21,3 +21,7 @@ namedBin = toTable({
   "shadertoy/examples/flare": "shadertoy-flare",
   "shadertoy/examples/gradientanim": "shadertoy-gradientanim",
 })
+
+task examples, "List examples":
+    for _, name in namedBin:
+        echo("* " & name)
