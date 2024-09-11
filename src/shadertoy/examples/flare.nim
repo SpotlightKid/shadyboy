@@ -47,7 +47,7 @@ echo testColor
 ]#
 
 # compile to a GPU shader:
-var shader = toGLSL(flare)
-#echo shader
+var shaderSrc = toGLSL(flare)
+#echo shaderSrc
 
-run("flare", shader, width, height)
+runWithShaderToy("flare", width, height, shaderSrc)

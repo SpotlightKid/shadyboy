@@ -1,19 +1,9 @@
+# Default newly created shadertoy.com shader in Nim
+
 import shady
 import vmath
 
 import shadertoy
-
-
-proc step*(a, x: float): float =
-  if x < a:
-    0.0
-  else:
-    1.0
-
-proc smoothstep*(a, b, x: float): float =
-  # Scale, and clamp x to 0..1 range
-  let x = clamp((x - a) / (b - a), 0.0, 1.0)
-  x * x * (3.0 - 2.0 * x)
 
 
 proc fragmentShader(
@@ -44,7 +34,8 @@ fragmentShader(testColor, fragCoord, 0.0, iResolution, ivec2(0, 0))
 echo testColor
 
 # compile to a GPU shader:
-var shader = toGLSL(fragmentShader)
-echo shader
+var shaderSrc = toGLSL(fragmentShader)
+echo shaderSrc
+
 # and run demo
-run("Animated Gradient", shader, width, height)
+runWithShaderToy(shaderSrc, title="Animated Gradient")
