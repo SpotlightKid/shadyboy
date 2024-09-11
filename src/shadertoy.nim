@@ -8,7 +8,6 @@ import therapist
 import windy
 import vmath
 
-
 const vertexShaderSrc = """
 #version 410
 
@@ -28,21 +27,20 @@ void main()
 
 let
   vertices: seq[float32] = @[
-    -1f, -1f, #1.0f, 0.0f, 0.0f,
-    +1f, -1f, #0.0f, 1.0f, 0.0f,
-    +1f, +1f, #0.0f, 0.0f, 1.0f,
-    +1f, +1f, #1.0f, 0.0f, 0.0f,
-    -1f, +1f, #0.0f, 1.0f, 0.0f,
-    -1f, -1f, #0.0f, 0.0f, 1.0f
+    -1f, -1f,
+    +1f, -1f,
+    +1f, +1f,
+    +1f, +1f,
+    -1f, +1f,
+    -1f, -1f,
   ]
   uvData: seq[Vec2] = @[
     vec2(0f, 1f),
     vec2(1f, 1f),
     vec2(1f, 0f),
-
     vec2(1f, 0f),
     vec2(0f, 0f),
-    vec2(0f, 1f),
+    vec2(0f, 1f)
   ]
 
 type shaderProgram* = ref object
@@ -83,6 +81,7 @@ proc checkLinkError*(program: GLuint): int =
   ## Checks the shader for errors.
   var code: GLint
   glGetProgramiv(program, GL_LINK_STATUS, addr code)
+
   if code.GLboolean == GL_FALSE:
     var length: GLint = 0
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, addr length)
@@ -95,9 +94,8 @@ proc checkLinkError*(program: GLuint): int =
 
 
 proc newShaderProgram*(
-    vertexShaderSrc: string,
-    fragmentShaderSrc: string
-  ): shaderProgram =
+    vertexShaderSrc: string, fragmentShaderSrc: string
+): shaderProgram =
   var vertexShaderId = glCreateShader(GL_VERTEX_SHADER)
   var vertexShaderSrcArr = allocCStringArray([vertexShaderSrc])
   glShaderSource(vertexShaderId, 1.GLsizei, vertexShaderSrcArr, nil)
@@ -138,13 +136,14 @@ proc loadTexture*(path: string): GLuint =
   glGenTextures(1, textureId.addr)
   glBindTexture(GL_TEXTURE_2D, textureId)
 
-  # set the texture wrapping/filtering options (on the currently bound texture object)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  # set the texture wrapping/filtering options
+  # (on the currently bound texture object)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
   #glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP)
   #glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
   #glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
   #glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
@@ -158,25 +157,21 @@ proc loadTexture*(path: string): GLuint =
     border = 0,
     format = GL_RGBA,
     `type` = GL_UNSIGNED_BYTE,
-    pixels = cast[pointer](textureImg.data[0].addr)
+    pixels = cast[pointer](textureImg.data[0].addr),
   )
-  glGenerateMipmap(GL_TEXTURE_2D);
+  glGenerateMipmap(GL_TEXTURE_2D)
   result = textureId
 
-
 proc newShaderToy*(
+    fragmentShaderSrc: string,
     title: string,
     width: int,
     height: int,
-    fragmentShaderSrc: string,
-    texturePath: string
-  ): ShaderToy =
+    texturePath: string,
+): ShaderToy =
   result = ShaderToy()
-  result.window = newWindow(
-    title = title,
-    size = ivec2(width.int32, height.int32),
-    visible = true
-  )
+  result.window =
+    newWindow(title = title, size = ivec2(width.int32, height.int32), visible = true)
   # Connect the GL context.
   result.window.makeContextCurrent()
 
@@ -209,7 +204,7 @@ proc newShaderToy*(
       cGL_FLOAT,
       GL_FALSE,
       0.GLsizei,
-      nil
+      nil,
     )
     glEnableVertexAttribArray(result.program.attributes["vertexPos"].GLuint)
 
@@ -217,14 +212,19 @@ proc newShaderToy*(
     var uvBuffer: GLuint
     glGenBuffers(1, uvBuffer.addr)
     glBindBuffer(GL_ARRAY_BUFFER, uvBuffer)
-    glBufferData(GL_ARRAY_BUFFER, uvData.len*4*2, uvData[0].addr, GL_STATIC_DRAW)
+    glBufferData(
+      GL_ARRAY_BUFFER,
+      uvData.len * 4 * 2,
+      uvData[0].addr,
+      GL_STATIC_DRAW
+    )
     glVertexAttribPointer(
       result.program.attributes["vertexUv"].GLuint,
       2.GLint,
       cGL_FLOAT,
       GL_FALSE,
       0.GLsizei,
-      nil
+      nil,
     )
     glEnableVertexAttribArray(result.program.attributes["vertexUv"].GLuint)
 
@@ -235,7 +235,6 @@ proc newShaderToy*(
       glActiveTexture(GL_TEXTURE0)
     except PixieError:
       result.textureId = -1
-
 
 proc display(self: ShaderToy) =
   glViewport(0, 0, self.window.size.x, self.window.size.y)
@@ -259,7 +258,7 @@ proc display(self: ShaderToy) =
       self.program.uniforms["iResolution"],
       self.window.size.x.GLfloat,
       self.window.size.y.GLfloat,
-      ratio.GLfloat
+      ratio.GLfloat,
     )
 
   if self.program.uniforms["iMouse"] != -1:
@@ -284,7 +283,7 @@ proc display(self: ShaderToy) =
 proc run*(self: ShaderToy) =
   self.window.onButtonPress = proc(button: Button) =
     #echo "onButtonPress ", button
-    case button:
+    case button
     of MouseLeft:
       let mpos = self.window.mousePos()
       self.lastClickPos = vec2(mpos.x.float32, mpos.y.float32)
@@ -302,7 +301,7 @@ proc run*(self: ShaderToy) =
 
   self.window.onButtonRelease = proc(button: Button) =
     #echo "onButtonPress ", button
-    case button:
+    case button
     of MouseLeft:
       self.mouseDown = false
     else:
@@ -324,22 +323,46 @@ proc runWithShaderToy*(
     title: string,
     width: int = 800,
     height: int = 600,
-    texturePath: string = ""
-  ) =
-  var shaderToy = newShaderToy(title, width, height, shaderSrc, texturePath)
+    texturePath: string = "",
+) =
+  var shaderToy = newShaderToy(shaderSrc, title, width, height, texturePath)
   shaderToy.run()
 
 
 proc main() =
   var title: string
   let opts = (
-      texture: newStringArg(@["-x", "--texture"], help="Texture image file path", helpvar="file"),
-      title: newStringArg(@["-t", "--title"], help="Window title"),
-      width: newIntArg(@["-w", "--width"], defaultVal=800, help="Window width in pixels", helpvar="px"),
-      height: newIntArg(@["-h", "--height"], defaultVal=600, help="Window height in pixels", helpvar="px"),
-      verbose: newCountArg(@["-v", "--verbose"], help="Verbose output"),
-      help: newHelpArg("--help"),
-      shader: newStringArg(@["<shader>"], help="Fragment shader source path", helpvar="file"),
+    texture: newStringArg(
+      @["-x", "--texture"],
+      help = "Texture image file path",
+      helpvar = "file"
+    ),
+    title: newStringArg(
+      @["-t", "--title"],
+      help = "Window title"
+    ),
+    width: newIntArg(
+      @["-w", "--width"],
+      defaultVal = 800,
+      help = "Window width in pixels",
+      helpvar = "px",
+    ),
+    height: newIntArg(
+      @["-h", "--height"],
+      defaultVal = 600,
+      help = "Window height in pixels",
+      helpvar = "px",
+    ),
+    verbose: newCountArg(
+      @["-v", "--verbose"],
+      help = "Verbose output"
+    ),
+    help: newHelpArg("--help"),
+    shader: newStringArg(
+      @["<shader>"],
+      help = "Fragment shader source path",
+      helpvar = "file"
+    ),
   )
 
   opts.parseOrQuit()
@@ -357,9 +380,8 @@ proc main() =
     title,
     opts.width.value,
     opts.height.value,
-    opts.texture.value
+    opts.texture.value,
   )
-
 
 when isMainModule:
   main()
