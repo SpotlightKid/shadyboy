@@ -62,7 +62,8 @@ type ShaderToy* = ref object
   vertexArrayId*: GLuint
   texturePath: string
   textureId*: int
-  startTime*, elapsedTime*, pausedTime*: float64
+  frame: int = 0
+  startTime*, elapsedTime*, pausedTime*: float64 = 0
   isPaused*: bool = false
   mouse: Mouse
 
@@ -131,6 +132,7 @@ proc newShaderProgram*(
   result.uniforms["iResolution"] = glGetUniformLocation(programId, "iResolution")
   result.uniforms["iMouse"] = glGetUniformLocation(programId, "iMouse")
   result.uniforms["iTime"] = glGetUniformLocation(programId, "iTime")
+  result.uniforms["iFrame"] = glGetUniformLocation(programId, "iFrame")
   result.uniforms["iChannel0"] = glGetUniformLocation(programId, "iChannel0")
 
 
@@ -260,11 +262,22 @@ proc display(self: ShaderToy) =
 
   if self.isPaused:
     self.pausedTime += now - self.startTime - self.elapsedTime
+  else:
+    self.frame += 1
 
   self.elapsedTime = now - self.startTime
 
   # Set shader values
   glUseProgram(self.program.programId)
+
+  if self.program.uniforms["iTime"] != -1:
+    glUniform1f(
+      self.program.uniforms["iTime"],
+      GLfloat(self.elapsedTime - self.pausedTime)
+    )
+
+  if self.program.uniforms["iFrame"] != -1:
+    glUniform1f(self.program.uniforms["iFrame"], self.frame.GLfloat)
 
   if self.program.uniforms["iResolution"] != -1:
     let ratio = self.window.size.x.float / self.window.size.y.float
@@ -342,6 +355,7 @@ proc run*(self: ShaderToy) =
     else:
       discard
 
+  self.frame = 0
   self.startTime = epochTime()
   self.elapsedTime = 0
   self.pausedTime = 0
