@@ -50,6 +50,12 @@ type shaderProgram* = ref object
   attributes*: Table[string, GLint]
   uniforms*: Table[string, GLint]
 
+type Mouse* = ref object
+  clicked: bool
+  down: bool
+  lastClickPos: IVec2
+  lastReleasePos: IVec2
+
 type ShaderToy* = ref object
   window*: Window
   program*: shaderProgram
@@ -58,8 +64,7 @@ type ShaderToy* = ref object
   textureId*: int
   startTime*, elapsedTime*, pausedTime*: float64
   isPaused*: bool = false
-  mouseDown: bool
-  lastClickPos: Vec2
+  mouse: Mouse
 
 
 proc checkError*(shader: GLuint): int =
@@ -162,6 +167,7 @@ proc loadTexture*(path: string): GLuint =
   glGenerateMipmap(GL_TEXTURE_2D)
   result = textureId
 
+
 proc newShaderToy*(
     fragmentShaderSrc: string,
     title: string,
@@ -236,6 +242,14 @@ proc newShaderToy*(
     except PixieError:
       result.textureId = -1
 
+  result.mouse = Mouse(
+    clicked: false,
+    down: false,
+    lastClickPos: ivec2(0, 0),
+    lastReleasePos: ivec2(0, 0),
+  )
+
+
 proc display(self: ShaderToy) =
   glViewport(0, 0, self.window.size.x, self.window.size.y)
   glClearColor(0, 0, 0, 1)
@@ -261,14 +275,31 @@ proc display(self: ShaderToy) =
       ratio.GLfloat,
     )
 
+  # Update iMouse uniform
+  var y, x, z, w: int
+
   if self.program.uniforms["iMouse"] != -1:
     let mpos = self.window.mousePos()
-    glUniform2i(self.program.uniforms["iMouse"], mpos.x, mpos.y)
+    if self.mouse.down:
+        x = mpos.x
+        y = self.window.size.y - mpos.y
+        z = self.mouse.lastClickPos.x
+    else:
+      x = self.mouse.lastReleasePos.x
+      y = self.mouse.lastReleasePos.y
+      z = -self.mouse.lastClickPos.x
 
-  if self.program.uniforms["iTime"] != -1:
-    glUniform1f(
-      self.program.uniforms["iTime"],
-      float32(self.elapsedTime - self.pausedTime)
+    if self.mouse.clicked:
+        w = self.mouse.lastClickPos.y
+    else:
+        w = -self.mouse.lastClickPos.y
+
+    glUniform4f(
+      self.program.uniforms["iMouse"],
+      x.GLfloat,
+      y.GLfloat,
+      z.GLfloat,
+      w.GLfloat,
     )
 
   if self.program.uniforms["iChannel0"] != -1 and self.textureId != -1:
@@ -282,12 +313,14 @@ proc display(self: ShaderToy) =
 
 proc run*(self: ShaderToy) =
   self.window.onButtonPress = proc(button: Button) =
-    #echo "onButtonPress ", button
+    #echo &"Button press: {button}"
     case button
     of MouseLeft:
       let mpos = self.window.mousePos()
-      self.lastClickPos = vec2(mpos.x.float32, mpos.y.float32)
-      self.mouseDown = true
+      #echo &"Mouse pos.: (y: {mpos.x}, y: {mpos.y})"
+      self.mouse.lastClickPos = ivec2(mpos.x, self.window.size.y - mpos.y)
+      self.mouse.clicked = true
+      self.mouse.down = true
     of KeyF11, KeyF:
       self.window.fullscreen = not self.window.fullscreen
     of KeyEscape, KeyQ:
@@ -303,18 +336,23 @@ proc run*(self: ShaderToy) =
     #echo "onButtonPress ", button
     case button
     of MouseLeft:
-      self.mouseDown = false
+      let mpos = self.window.mousePos()
+      self.mouse.lastReleasePos = ivec2(mpos.x, self.window.size.y - mpos.y)
+      self.mouse.down = false
     else:
       discard
 
   self.startTime = epochTime()
   self.elapsedTime = 0
   self.pausedTime = 0
-  self.mouseDown = false
-  self.lastClickPos = vec2(0, 0)
+  self.mouse.clicked = false
+  self.mouse.down = false
+  self.mouse.lastClickPos = ivec2(0, 0)
+  self.mouse.lastReleasePos = ivec2(0, 0)
 
   while not self.window.closeRequested:
     self.display()
+    self.mouse.clicked = false
     pollEvents()
 
 

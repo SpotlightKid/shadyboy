@@ -12,7 +12,7 @@ proc flare(
     uv: Vec2,
     iTime: Uniform[float32],
     iResolution: Uniform[Vec3],
-    iMouse: Uniform[IVec2]
+    iMouse: Uniform[Vec4]
   ) =
   var
     c: Vec3

@@ -28,7 +28,7 @@ proc fragmentShader(
     gl_FragCoord: Vec4,
     iTime: Uniform[float32],
     iResolution: Uniform[Vec3],
-    iMouse: Uniform[IVec2]
+    iMouse: Uniform[Vec4]
   ) =
   var uv = (gl_FragCoord.xy * 2.0 - iResolution.xy) / iResolution.y
   # Filled circle with sharp edge
