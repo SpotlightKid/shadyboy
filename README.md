@@ -1,12 +1,12 @@
-# Nim Shadertoy
+# Shadyboy
 
-An *OpenGL* application implemented in [Nim] allowing to run [GLSL] shaders
-from [Shadertoy] on the desktop with only little changes but much better
-performance than in the browser. Shaders can also implemented in Nim and are
-translated to GLSL on-the-fly.
+A Nim shader toy, that is an *OpenGL* desktop application implemented in [Nim]
+allowing to run [GLSL] shaders from [Shadertoy] on the desktop with only little
+changes but much better performance than in the browser. Shaders can also
+implemented in Nim and are translated to GLSL on-the-fly.
 
 This is currently in alpha stage and only supports basic shaders, which
-do not use additional textures, sounds or maps.
+do not use more than one textures or additional sounds or maps.
 
 
 ## Getting started
@@ -15,12 +15,16 @@ do not use additional textures, sounds or maps.
 
     nimble build -d:release
 
-## Run the examples
+## Run the Nim examples
 
-    nimble run -d:release shadertoy-<name>
+    nimble run -d:release shadyboy-<name>
 
 Run `nimble examples` to list available examples.
 
+
+## Run shadertoy GLSL fragment shaders directly
+
+    nimble run -d:release shadyboy shaders/<name>.frag
 
 ## Requirements
 
@@ -34,6 +38,7 @@ resolved and installed by nimble.
 * windy
 * pixie
 * shady
+* therapist
 * vmath
 
 ### Runtime

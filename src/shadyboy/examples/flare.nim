@@ -1,9 +1,9 @@
-# from https://www.shadertoy.com/view/XsXXDn by 'Danilo Guanabara'
+# from https://www.shadyboy.com/view/XsXXDn by 'Danilo Guanabara'
 
 import shady
 import vmath
 
-import shadertoy
+import shadyboy
 
 
 proc flare(

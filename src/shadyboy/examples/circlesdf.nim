@@ -3,7 +3,7 @@
 import shady
 import vmath
 
-import shadertoy
+import shadyboy
 
 
 proc step*(a, x: float): float =
