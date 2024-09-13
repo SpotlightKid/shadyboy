@@ -56,7 +56,7 @@ type Mouse* = ref object
   lastClickPos: IVec2
   lastReleasePos: IVec2
 
-type ShaderToy* = ref object
+type ShadyBoy* = ref object
   window*: Window
   program*: shaderProgram
   vertexArrayId*: GLuint
@@ -170,14 +170,14 @@ proc loadTexture*(path: string): GLuint =
   result = textureId
 
 
-proc newShaderToy*(
+proc newShadyBoy*(
     fragmentShaderSrc: string,
     title: string,
     width: int,
     height: int,
     texturePath: string,
-): ShaderToy =
-  result = ShaderToy()
+): ShadyBoy =
+  result = ShadyBoy()
   result.window =
     newWindow(title = title, size = ivec2(width.int32, height.int32), visible = true)
   # Connect the GL context.
@@ -252,7 +252,7 @@ proc newShaderToy*(
   )
 
 
-proc display(self: ShaderToy) =
+proc display(self: ShadyBoy) =
   glViewport(0, 0, self.window.size.x, self.window.size.y)
   glClearColor(0, 0, 0, 1)
   glClear(GL_COLOR_BUFFER_BIT)
@@ -324,7 +324,7 @@ proc display(self: ShaderToy) =
   self.window.swapBuffers()
 
 
-proc run*(self: ShaderToy) =
+proc run*(self: ShadyBoy) =
   self.window.onButtonPress = proc(button: Button) =
     #echo &"Button press: {button}"
     case button
@@ -370,15 +370,15 @@ proc run*(self: ShaderToy) =
     pollEvents()
 
 
-proc runWithShaderToy*(
+proc runWithShadyBoy*(
     shaderSrc: string,
     title: string,
     width: int = 800,
     height: int = 600,
     texturePath: string = "",
 ) =
-  var shaderToy = newShaderToy(shaderSrc, title, width, height, texturePath)
-  shaderToy.run()
+  var shadyBoy = newShadyBoy(shaderSrc, title, width, height, texturePath)
+  shadyBoy.run()
 
 
 proc main() =
@@ -427,7 +427,7 @@ proc main() =
   else:
     quit(&"File not found: {opts.shader.value}")
 
-  runWithShaderToy(
+  runWithShadyBoy(
     readFile(opts.shader.value),
     title,
     opts.width.value,

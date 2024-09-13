@@ -41,4 +41,4 @@ proc fragmentShader(
   fragColor = vec4(col.r, col.g, col.b, 1.0)
 
 
-runWithShaderToy(toGLSL(fragmentShader), title="Circle SDF")
+runWithShadyBoy(toGLSL(fragmentShader), title="Circle SDF")

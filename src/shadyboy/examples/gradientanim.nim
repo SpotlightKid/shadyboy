@@ -37,4 +37,4 @@ var shaderSrc = toGLSL(fragmentShader)
 echo shaderSrc
 
 # And run it:
-runWithShaderToy(shaderSrc, title="Animated Gradient")
+runWithShadyBoy(shaderSrc, title="Animated Gradient")

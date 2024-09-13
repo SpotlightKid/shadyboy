@@ -33,4 +33,4 @@ proc flare(
   fragColor = vec4(v.x, v.y, v.z, iTime)
 
 
-runWithShaderToy(toGLSL(flare), "Flare")
+runWithShadyBoy(toGLSL(flare), "Flare")
