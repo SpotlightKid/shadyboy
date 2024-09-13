@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>GLSL Hilfe</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</head>
+
+<body>
+<div id="dlgHelp" class="dialog">
+   <h1>GLSL Hilfe</h1>
+   <div class="dialogContentBody">
+     <p>Diese Hilfe deckt nur jene Bereiche von GLSL ES ab die relevant für Shadertoy sind. Eine vollständige Spezifikation ist hier zu finden: <a class="user"
+     href="https://www.khronos.org/registry/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf">GLSL ES Spezifikation</a>
+     </p>
+     <h2>Language:</h2>
+     <hr/>
+     <ul>
+         <li><b>Version:</b> WebGL 2.0</li>
+         <li><b>Arithmetic:</b> ( ) + - ! * / %</li>
+         <li><b>Logical/Relatonal:</b> ~  &lt;  &gt;  &lt;=   &gt;=  ==  !=  &amp;&amp;  ||</li>
+         <li><b>Bit Operators:</b> &amp; ^ | &lt;&lt; &gt;&gt;</li>
+         <li><b>Comments:</b> // /* */</li>
+         <li><b>Types:</b> void bool int uint float vec2 vec3 vec4 bvec2 bvec3 bvec4 ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 mat2 mat3 mat4 mat?x? sampler2D, sampler3D, samplerCube</li>
+         <li><b>Format:</b> float a = 1.0; int b = 1; uint i = 1U; int i = 0x1;</li>
+         <li><b>Function Parameter Qualifiers:</b> [none], in, out, inout</li>
+         <li><b>Global Variable Qualifiers:</b> const</li>
+         <li><b>Vector Components:</b> .xyzw .rgba .stpq</li>
+         <li><b>Flow Control:</b> if else for return break continue switch/case</li>
+         <li><b>Output:</b> vec4 fragColor</li>
+         <li><b>Input:</b> vec2 fragCoord</li>
+         <li><b>Preprocessor:</b> #define #undef #if #ifdef #ifndef #else #elif #endif #error #pragma #line</li>
+     </ul>
+
+     <br/>
+     <h2>Built-in Functions:</h2>
+     <hr/>
+     <table>
+     <tr>
+     <td valign="top">
+       <ul>
+           <li>ftype radians (ftype degrees)</li>
+           <li>ftype degrees (ftype radians)</li>
+           <li>ftype sin (ftype angle)</li>
+           <li>ftype cos (ftype angle)</li>
+           <li>ftype tan (ftype angle)</li>
+           <li>ftype asin (ftype x)</li>
+           <li>ftype acos (ftype x)</li>
+           <li>ftype atan (ftype y, ftype x)</li>
+           <li>ftype atan (ftype y_over_x)</li>
+           <li>ftype sinh (ftype x)</li>
+           <li>ftype cosh (ftype x)</li>
+           <li>ftype tanh (ftype x)</li>
+           <li>ftype asinh (ftype x)</li>
+           <li>ftype acosh (ftype x)</li>
+           <li>ftype atanh f(type x)</li>
+       </ul>
+       <ul>
+           <li>ftype pow (ftype x, ftype y)</li>
+           <li>ftype exp (ftype x)</li>
+           <li>ftype log (ftype x)</li>
+           <li>ftype exp2 (ftype x)</li>
+           <li>ftype log2 (ftype x)</li>
+           <li>ftype sqrt (ftype x)</li>
+           <li>ftype inversesqrt (ftype x)</li>
+       </ul>
+       <ul>
+           <li>type abs (type x)</li>
+           <li>type sign (type x)</li>
+           <li>ftype floor (ftype x)</li>
+           <li>ftype ceil (ftype x)</li>
+           <li>ftype trunc (type x)</li>
+           <li>ftype fract (ftype x)</li>
+           <li>ftype mod (ftype x, ftype y)</li>
+           <li>ftype modf (ftype x, out ftype i)</li>
+           <li>type min (type x, type y)</li>
+           <li>type max (type x, type y)</li>
+           <li>type clamp (type x, type minV, type maxV)</li>
+           <li>ftype mix (ftype x, ftype y, ftype a)</li>
+           <li>type step (type edge, type x)</li>
+           <li>ftype smoothstep (ftype a, ftype b, ftype x)</li>
+       </ul>
+       <ul>
+           <li>float length (vec x)</li>
+           <li>float distance (vec p0, vec p1)</li>
+           <li>float dot (vec x, vec y)</li>
+           <li>vec3 cross (vec3 x, vec3 y)</li>
+           <li>vec  normalize (vec x)</li>
+           <li>vec  faceforward (vec N, vec I, vec Nref)</li>
+           <li>vec  reflect (vec I, vec N)</li>
+           <li>vec  refract (vec I, vec N, float eta)</li>
+           <li>float determinant(mat? m)</li>
+           <li>mat?x? outerProduct(vec c, vec r)</li>
+           <li>mat?x? matrixCompMult (mat?x? x, mat?x? y)</li>
+           <li>mat? inverse (mat? inverse)</li>
+           <li>mat?x? transpose (mat?x? inverse)</li>
+       </ul>
+     </td>
+     <td valign="top">
+       <ul>
+           <li>vec4  texture( sampler , vec coord [, float bias])</li>
+           <li>vec4  textureLod(  sampler, vec coord, float lod)</li>
+           <li>vec4  textureLodOffset( sampler sampler, vec coord, float lod, ivec offset)</li>
+           <li>vec4  textureGrad( sampler , vec coord, vec2 dPdx, vec2 dPdy)</li>
+           <li>vec4  textureGradOffset sampler , vec coord, vec dPdx, vec dPdy, vec offset)</li>
+           <li>vec4  textureProj( sampler , vec coord [, float bias])</li>
+           <li>vec4  textureProjLod( sampler , vec coord, float lod)</li>
+           <li>vec4  textureProjLodOffset( sampler , vec coord, float lod, vec? offset)</li>
+           <li>vec4  textureProjGrad( sampler , vec coord, vec2 dPdx, vec2 dPdy)</li>
+           <li>vec4  texelFetch( sampler , ivec coord, int lod)</li>
+           <li>vec4  texelFetchOffset( sampler, ivec coord, int lod, ivec offset )</li>
+           <li>ivec  textureSize( sampler , int lod)</li>
+       </ul>
+       <ul>
+           <li>ftype dFdx (ftype x)</li>
+           <li>ftype dFdy (ftype x)</li>
+           <li>ftype fwidth (ftype p)</li>
+       </ul>
+       <ul>
+           <li>btype isnan (ftype x)</li>
+           <li>btype isinf (ftype x)</li>
+           <li>ftype intBitsToFloat (itype v)</li>
+           <li>ftype uintBitsToFloat (utype v)</li>
+           <li>itype floatBitsToInt (ftype v)</li>
+           <li>utype floatBitsToUint (ftype v)</li>
+           <li>uint packSnorm2x16 (vec2 v)</li>
+           <li>uint packUnorm2x16 (vec2 v)</li>
+           <li>vec2 unpackSnorm2x16 (uint p)</li>
+           <li>vec2 unpackUnorm2x16 (uint p)</li>
+       </ul>
+       <ul>
+           <li>bvec lessThan (vec x, vec y)</li>
+           <li>bvec lessThanEqual (vec x, vec y)</li>
+           <li>bvec greaterThan (vec x, vec y)</li>
+           <li>bvec greaterThanEqual (vec x, vec y)</li>
+           <li>bvec equal (type x, type y)</li>
+           <li>bvec notEqual (type x, type y)</li>
+           <li>bool any (bvec x)</li>
+           <li>bool all (bvec x)</li>
+           <li>bvec not (bvec x)</li>
+       </ul>
+     </td>
+     </tr>
+     </table>
+     <br/>
+     <h2>How-to</h2>
+     <hr/>
+     <ul>
+         <li><b>Use structs:</b> struct myDataType { float occlusion; vec3 color; }; myDataType myData = myDataType(0.7, vec3(1.0, 2.0, 3.0));</li>
+         <li><b>Initialize arrays:</b> float[] x = float[] (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6);</li>
+         <li><b>Do conversions:</b> int a = 3; float b = float(a);</li>
+         <li><b>Do component swizzling:</b> vec4 a = vec4(1.0,2.0,3.0,4.0); vec4 b = a.zyyw;</li>
+         <li><b>Access matrix components:</b> mat4 m; m[1] = vec4(2.0); m[0][0] = 1.0; m[2][3] = 2.0;</li>
+     </ul>
+     <br/>
+     <h2>Be careful!</h2>
+     <hr/>
+     <ul>
+         <li><b>the <i>f</i> suffix for floating pont numbers:</b> 1.0f is illegal in GLSL. You must use 1.0</li>
+         <li><b>saturate():</b> saturate(x) doesn't exist in GLSL. Use clamp(x,0.0,1.0) instead</li>
+         <li><b>pow/sqrt:</b> please don't feed sqrt() and pow() with negative numbers. Add an abs() or max(0.0,) to the argument</li>
+         <li><b>mod:</b> please don't do mod(x,0.0). This is undefined in some platforms</li>
+         <li><b>variables:</b> initialize your variables! Don't assume they'll be set to zero by default</li>
+         <li><b>functions:</b> don't call your functions the same name as any of your variables</li>
+     </ul>
+     <br/>
+     <h2>Shadertoy Inputs</h2>
+     <hr/>
+     <table>
+         <tr><td><b>vec3</b></td><td><b>iResolution</b></td><td>image/buffer</td><td>The viewport resolution (z is pixel aspect ratio, usually 1.0)</td></tr>
+         <tr><td><b>float</b></td><td><b>iTime</b></td><td>image/sound/buffer</td><td>Current time in seconds</td></tr>
+         <tr><td><b>float</b></td><td><b>iTimeDelta</b></td><td>image/buffer</td><td>Time it takes to render a frame, in seconds</td></tr>
+         <tr><td><b>int</b></td><td><b>iFrame</b></td><td>image/buffer</td><td>Current frame</td></tr>
+         <tr><td><b>float</b></td><td><b>iFrameRate</b></td><td>image/buffer</td><td>Number of frames rendered per second</td></tr>
+         <tr><td><b>float</b></td><td><b>iChannelTime[4]</b></td><td>image/buffer</td><td>Time for channel (if video or sound), in seconds</td></tr>
+         <tr><td><b>vec3</b></td><td><b>iChannelResolution[4]</b></td><td>image/buffer/sound</td><td>Input texture resolution for each channel</td></tr>
+         <tr><td><b>vec4</b></td><td><b>iMouse</b></td><td>image/buffer</td><td>xy = current pixel coords (if LMB is down). zw = click pixel</td></tr>
+         <tr><td><b>sampler2D</b></td><td><b>iChannel{i}</b></td><td>image/buffer/sound</td><td>Sampler for input textures i</td></tr>
+         <tr><td><b>vec4</b></td><td><b>iDate</b></td><td>image/buffer/sound</td><td>Year, month, day, time in seconds in .xyzw</td></tr>
+         <tr><td><b>float</b></td><td><b>iSampleRate</b></td><td>image/buffer/sound</td><td>The sound sample rate (typically 44100)</td></tr>
+     </table>
+     <br/>
+     <h2>Shadertoy Outputs</h2>
+     <hr/>
+     Image shaders: fragColor is used as output channel. It is not, for now, mandatory but recommended to leave the alpha channel to 1.0.<br>
+     <br/>
+     Sound shaders: the mainSound() function returns a vec2 containing the left and right (stereo) sound channel wave data.
+     <br/>
+     <br/>
+     <br/>
+
+   </div>
+</div>
+</body>
+</html>
