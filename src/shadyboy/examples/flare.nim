@@ -32,22 +32,5 @@ proc flare(
   let v = c/l
   fragColor = vec4(v.x, v.y, v.z, iTime)
 
-let
-  width = 800
-  height = 600
 
-#[
-# test on the CPU:
-let iResolution = vec3(width.float32, height.float32, 1.0)
-
-var testColor: Vec4
-
-flare(testColor, vec2(100, 100), 0.0, iResolution)
-echo testColor
-]#
-
-# compile to a GPU shader:
-var shaderSrc = toGLSL(flare)
-#echo shaderSrc
-
-runWithShaderToy("flare", width, height, shaderSrc)
+runWithShaderToy(toGLSL(flare), "Flare")

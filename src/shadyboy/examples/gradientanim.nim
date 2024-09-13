@@ -29,7 +29,7 @@ let
 let iResolution = vec3(width.float32, height.float32, 1.0)
 var testColor: Vec4
 let fragCoord = vec4(iResolution.x / 2.0, iResolution.y / 2.0, 0.0, 1.0)
-fragmentShader(testColor, fragCoord, 0.0, iResolution, ivec2(0, 0))
+fragmentShader(testColor, fragCoord, 0.0, iResolution, vec4(0.0, 0.0, 0.0, 0.0))
 echo testColor
 
 # Compile to GLSL source:
