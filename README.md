@@ -3,10 +3,11 @@
 A Nim shader toy, that is an *OpenGL* desktop application implemented in [Nim]
 allowing to run [GLSL] shaders from [Shadertoy] on the desktop with only little
 changes but potentially better performance than in the browser. Shaders can
-also implemented in Nim and are translated to GLSL on-the-fly.
+also be implemented in Nim and are translated to GLSL on-the-fly.
 
-This is currently in alpha stage and only supports basic shaders, which do not
-use more than one texture and no additional source files, sounds or maps.
+This is currently in alpha stage and only supports basic shadertoy.com shaders,
+which do not use more than one texture and no additional source files, sounds
+or maps.
 
 
 ## Getting started
@@ -66,6 +67,37 @@ void main() {
 Run the shader file with `shadyboy` as shown above, e.g.:
 
     nimble run -d:release shadyboy shader.frag
+
+## Command-line Options
+
+```
+$ ./bin/shadyboy --help
+Usage:
+  shadyboy <shader>
+  shadyboy (--help)
+
+Arguments:
+  <shader>              Fragment shader source path
+
+Options:
+  -x, --texture=<file>  Texture image file path
+  -t, --title=<title>   Window title
+  -w, --width=<px>      Window width in pixels [default: 800]
+  -h, --height=<px>     Window height in pixels [default: 600]
+  -v, --verbose...      Verbose output
+      --help            Show help message
+```
+
+## Interactive Controls
+
+| Control                   | Action                                                              |
+| ------------------------- | ------------------------------------------------------------------- |
+| `ESC / q`                 | Quit program                                                        |
+| `F11 / f`                 | Toggle full-screen window                                           |
+| `SPACE`                   | Toggle pause animation timer (`iTime`) and frame counter (`iFrame`) |
+| Left mouse click-and-drag | Manipulate `iMouse` shader uniform ([how does it work?])            |
+
+[how does it work?]: https://shadertoyunofficial.wordpress.com/2016/07/20/special-shadertoy-features/
 
 
 ## Requirements
