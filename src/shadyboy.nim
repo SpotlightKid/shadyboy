@@ -338,10 +338,8 @@ proc run*(self: ShadyBoy) =
       self.window.fullscreen = not self.window.fullscreen
     of KeyEscape, KeyQ:
       self.window.closeRequested = true
-      return
     of KeySpace:
       self.isPaused = not self.isPaused
-      return
     else:
       discard
 
@@ -407,7 +405,7 @@ proc main() =
     ),
     verbose: newCountArg(
       @["-v", "--verbose"],
-      help = "Verbose output"
+      help = "Verbose output (does nothing atm)"
     ),
     help: newHelpArg("--help"),
     shader: newStringArg(
